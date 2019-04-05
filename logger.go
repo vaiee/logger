@@ -19,7 +19,7 @@ func getLoggerMust() *zap.Logger {
 	return logger
 }
 
-func WithOptions(opts ...zap.Option) *zap.Logger { return getLoggerMust().WithOptions(opts) }
+func WithOptions(opts ...zap.Option) *zap.Logger { return getLoggerMust().WithOptions(opts...) }
 
 func Check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 	return getLoggerMust().Check(lvl, msg)
