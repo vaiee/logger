@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	mutex  sync.RWMutex
+	once   sync.Once
 	logger *zap.Logger
 )
 
@@ -49,14 +49,4 @@ func Warn(msg string, fields ...zap.Field) { getLoggerMust().Warn(msg, fields...
 
 func With(fields ...zap.Field) *zap.Logger { return getLoggerMust().With(fields...) }
 
-func Register(l *zap.Logger) *zap.Logger {
-	mutex.Lock()
-	defer mutex.Unlock()
-
-	if logger == nil {
-		logger = l
-		return logger
-	}
-
-	panic("logger: Register called twice for logger")
-}
+func Register(l *zap.Logger) *zap.Logger { once.Do(func() { logger = l }) }
